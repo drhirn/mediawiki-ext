@@ -1,0 +1,57 @@
+version: '3.8'
+
+secrets:
+  MYSQL_DATABASE:
+    file: ./.secrets/MYSQL_DATABASE.secret
+  MYSQL_PASSWORD:
+    file: ./.secrets/MYSQL_PASSWORD.secret
+  MYSQL_USER:
+    file: ./.secrets/MYSQL_USER.secret
+
+services:
+  wiki-app:
+    build:
+      context: .
+      args:
+        - buildno=${VERSION}
+        - gitcommithash=${COMMIT}
+      labels:
+        - "at.jft.description=Mediawiki with Extensions"
+        - "at.jft.department=IT"
+        - "at.jft.label-with-empty-value"
+    image: drhirn/mediawiki
+    container_name: wiki_app_ext
+    restart: unless-stopped
+    volumes:
+      - ./images:/var/www/html/images
+#      - ./LocalSettings.php:/var/www/html/LocalSettings.php
+    ports:
+      - 8080:80
+
+    networks:
+      - wiki
+
+  wiki-db:
+    image: mariadb
+    container_name: wiki_db_ext
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: my_wiki
+      MYSQL_USER: wikiuser
+      MYSQL_PASSWORD: SHkHlJgoLlu9pSYjPRI7
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    volumes:
+      - type: volume
+        source: mediawiki-db
+        target: /var/lib/mysql
+    networks:
+      - wiki
+
+volumes:
+  mediawiki-db:
+
+networks:
+  wiki:
+    name: mediawiki
