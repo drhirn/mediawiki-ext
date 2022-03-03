@@ -15,6 +15,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	exit;
 }
 
+require_once "/external_includes/dbconn.php";
 
 ## Uncomment this to disable output compression
 # $wgDisableOutputCompression = true;
@@ -44,19 +45,14 @@ $wgLogos = [ '1x' => "$wgResourceBasePath/resources/assets/wiki.png" ];
 $wgEnableEmail = true;
 $wgEnableUserEmail = true; # UPO
 
-$wgEmergencyContact = "apache@🌻.invalid";
-$wgPasswordSender = "apache@🌻.invalid";
+# Moved to file ./secrets/dbconn
 
 $wgEnotifUserTalk = false; # UPO
 $wgEnotifWatchlist = false; # UPO
 $wgEmailAuthentication = true;
 
 ## Database settings
-$wgDBtype = "mysql";
-$wgDBserver = "host.docker.internal";
-$wgDBname = "my_wiki";
-$wgDBuser = "wikiuser";
-$wgDBpassword = "SHkHlJgoLlu9pSYjPRI7";
+# Move to file ./secrets/dbconn.php
 
 # MySQL specific settings
 $wgDBprefix = "";
@@ -102,14 +98,12 @@ $wgShellLocale = "C.UTF-8";
 # Site language code, should be one of the list in ./languages/data/Names.php
 $wgLanguageCode = "de";
 
-$wgSecretKey = "170f973ff03573b832527ed978040decd35f0e349a4be344a4cf74f5fe79f3e9";
-
 # Changing this will log out all existing sessions.
 $wgAuthenticationTokenVersion = "1";
 
 # Site upgrade key. Must be set to a string (default provided) to turn on the
 # web installer while LocalSettings.php is in place
-$wgUpgradeKey = "e4ea849ececbf0f6";
+
 
 ## For attaching licensing metadata to pages, and displaying an
 ## appropriate copyright notice / icon. GNU Free Documentation

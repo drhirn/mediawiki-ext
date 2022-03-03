@@ -19,13 +19,14 @@ RUN git clone --branch REL1_35 https://github.com/wikimedia/mediawiki-extensions
 
 RUN wget https://github.com/composer/getcomposer.org/raw/2dce1a337ceed821c5e243bd54ca11b61e903a2a/web/download/2.1.14/composer.phar
 
+RUN mkdir /external_includes
+COPY ./.secrets/dbconn.php /external_includes
+RUN chgrp www-data /external_includes/dbconn.php
+RUN chmod 640 /external_includes/dbconn.php
+
 COPY ./composer.local.json /var/www/html
 COPY ./LocalSettings.php /var/www/html
-
-#RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-#RUN php -r "if (hash_file('sha384', 'composer-setup.php') === '906a84df04cea2aa72f40b5f787e49f22d4c2f19492ac310e8cba5b96ac8b64115ac402c8cd292b8a03482574915d1a8') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-#RUN php composer-setup.php
-#RUN php -r "unlink('composer-setup.php');"
+RUN chown www-data:www-data ./LocalSettings.php && chmod 400 ./LocalSettings.php
 
 RUN php composer.phar update --no-dev
 
