@@ -1,0 +1,1 @@
+*/5 * * * * www-data /usr/local/bin/php /var/www/html/maintenance/runJobs.php --maxtime=3600 > /proc/1/fd/1 2>/proc/1/fd/2
