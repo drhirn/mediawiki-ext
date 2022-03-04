@@ -22,6 +22,8 @@ services:
     image: drhirn/mediawiki
     container_name: wiki_app_ext
     restart: unless-stopped
+    depends_on:
+      - wiki-db
     volumes:
       - ./images:/var/www/html/images
 #      - ./LocalSettings.php:/var/www/html/LocalSettings.php
@@ -38,10 +40,14 @@ services:
     ports:
       - 3306:3306
     environment:
-      MYSQL_DATABASE: my_wiki
-      MYSQL_USER: wikiuser
-      MYSQL_PASSWORD: SHkHlJgoLlu9pSYjPRI7
+      MARIADB_DATABASE_FILE: /run/secrets/MYSQL_DATABASE
+      MARIADB_USER_FILE: /run/secrets/MYSQL_USER
+      MARIADB_PASSWORD_FILE: /run/secrets/MYSQL_PASSWORD
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    secrets:
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
     volumes:
       - type: volume
         source: mediawiki-db
