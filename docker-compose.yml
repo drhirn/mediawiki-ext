@@ -9,6 +9,28 @@ secrets:
     file: ./.secrets/MYSQL_USER.secret
 
 services:
+  wiki-db:
+    image: mariadb
+    container_name: wiki_db_ext
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MARIADB_DATABASE_FILE: /run/secrets/MYSQL_DATABASE
+      MARIADB_USER_FILE: /run/secrets/MYSQL_USER
+      MARIADB_PASSWORD_FILE: /run/secrets/MYSQL_PASSWORD
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    secrets:
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+    volumes:
+      - type: volume
+        source: mediawiki-db
+        target: /var/lib/mysql
+    networks:
+      - wiki
+
   wiki-app:
     build:
       context: .
@@ -35,28 +57,6 @@ services:
       - ./images:/var/www/html/images
     ports:
       - 8080:80
-    networks:
-      - wiki
-
-  wiki-db:
-    image: mariadb
-    container_name: wiki_db_ext
-    restart: always
-    ports:
-      - 3306:3306
-    environment:
-      MARIADB_DATABASE_FILE: /run/secrets/MYSQL_DATABASE
-      MARIADB_USER_FILE: /run/secrets/MYSQL_USER
-      MARIADB_PASSWORD_FILE: /run/secrets/MYSQL_PASSWORD
-      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
-    secrets:
-      - MYSQL_DATABASE
-      - MYSQL_USER
-      - MYSQL_PASSWORD
-    volumes:
-      - type: volume
-        source: mediawiki-db
-        target: /var/lib/mysql
     networks:
       - wiki
 

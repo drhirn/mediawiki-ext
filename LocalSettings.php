@@ -145,6 +145,7 @@ wfLoadExtension( 'AdminLinks' );
 wfLoadExtension( 'HeaderTabs' );
 wfLoadExtension( 'SimpleBatchUpload' );
 #wfLoadExtension( 'UploadWizard' );
+wfLoadExtension( 'SemanticMediaWiki' );
 
 
 # End of automatically generated settings.
