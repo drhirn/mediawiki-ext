@@ -49,4 +49,4 @@ RUN chown www-data:www-data ./LocalSettings.php && chmod 400 ./LocalSettings.php
 
 RUN php maintenance/update.php --skip-external-dependencies --quick
 
-CMD ["cron", "-f"]
+#CMD ["cron", "-f"]
