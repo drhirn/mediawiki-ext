@@ -15,6 +15,13 @@ services:
       args:
         - buildno=${VERSION}
         - gitcommithash=${COMMIT}
+        - dbname=${DBNAME}
+        - dbserver=${DBSERVER}
+        - dbuser=${DBUSER}
+        - dbuserpwd=${DBUSERPWD}
+        - server=${SERVER}
+        - adminpwd=${ADMINPWD}
+        - adminuser=${ADMINUSER}
       labels:
         - "at.jft.description=Mediawiki with Extensions"
         - "at.jft.department=IT"
@@ -26,10 +33,8 @@ services:
       - wiki-db
     volumes:
       - ./images:/var/www/html/images
-#      - ./LocalSettings.php:/var/www/html/LocalSettings.php
     ports:
       - 8080:80
-
     networks:
       - wiki
 

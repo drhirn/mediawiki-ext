@@ -1,7 +1,16 @@
+# syntax=docker/dockerfile:1
+
 FROM mediawiki:lts
 
 ARG buildno
 ARG gitcommithash
+ARG dbname
+ARG dbserver
+ARG dbuser
+ARG dbuserpwd
+ARG server
+ARG adminpwd
+ARG adminuser
 
 RUN echo "Build number: $buildno"
 RUN echo "Based on commit: $gitcommithash"
@@ -25,9 +34,12 @@ RUN chgrp www-data /external_includes/dbconn.php
 RUN chmod 640 /external_includes/dbconn.php
 
 COPY ./composer.local.json /var/www/html
-COPY ./LocalSettings.php /var/www/html
-RUN chown www-data:www-data ./LocalSettings.php && chmod 400 ./LocalSettings.php
 
 RUN php composer.phar update --no-dev
+
+RUN php maintenance/install.php --dbname=$dbname --dbserver=$dbserver --installdbuser=$dbuser --installdbpass=$dbuserpwd --dbuser=$dbuser --dbpass=$dbuserpwd --server=$server --scriptpath=/ --lang=de --pass=$adminpwd "Wiki Name" $adminuser
+
+COPY ./LocalSettings.php /var/www/html
+RUN chown www-data:www-data ./LocalSettings.php && chmod 400 ./LocalSettings.php
 
 RUN php maintenance/update.php --skip-external-dependencies --quick
