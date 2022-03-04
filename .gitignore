@@ -1,2 +1,5 @@
-images/
-.secrets/
+/*
+!composer.local.json
+!docker-compose.yml
+!Dockerfile
+!LocalSettings.php
