@@ -12,7 +12,7 @@ services:
   wiki-db:
     image: mariadb
     container_name: wiki_db_ext
-    restart: always
+    restart: unless-stopped
     ports:
       - 3306:3306
     environment:
