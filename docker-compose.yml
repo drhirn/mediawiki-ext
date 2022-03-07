@@ -2,11 +2,11 @@ version: '3.8'
 
 secrets:
   MYSQL_DATABASE:
-    file: ./.secrets/MYSQL_DATABASE.secret
+    file: ./.secrets/dbname
   MYSQL_PASSWORD:
-    file: ./.secrets/MYSQL_PASSWORD.secret
+    file: ./.secrets/dbuserpwd
   MYSQL_USER:
-    file: ./.secrets/MYSQL_USER.secret
+    file: ./.secrets/dbuser
 
 services:
   wiki-db:
@@ -32,22 +32,6 @@ services:
       - wiki
 
   wiki-app:
-    build:
-      context: .
-      args:
-        - buildno=${VERSION}
-        - gitcommithash=${COMMIT}
-        - dbname=${DBNAME}
-        - dbserver=${DBSERVER}
-        - dbuser=${DBUSER}
-        - dbuserpwd=${DBUSERPWD}
-        - server=${SERVER}
-        - adminpwd=${ADMINPWD}
-        - adminuser=${ADMINUSER}
-      labels:
-        - "at.jft.description=Mediawiki with Extensions"
-        - "at.jft.department=IT"
-        - "at.jft.label-with-empty-value"
     image: drhirn/mediawiki
     container_name: wiki_app_ext
     restart: unless-stopped
