@@ -4,3 +4,4 @@
 !Dockerfile
 !LocalSettings.php
 !cron_wiki
+!.dockerignore
